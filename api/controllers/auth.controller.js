@@ -22,20 +22,31 @@ export const signup = async (req, res, next) => {
     const userExist = await User.findOne({
       $or: [{ username: username }, { email: email }],
     });
-    console.log(userExist);
 
     if (userExist) return next(errorHandler(400, "User already exists!"));
 
-    const hashedPassword = bcryptjs.hashSync(password, 10);
+    // const hashedPassword = bcryptjs.hashSync(password, 10);
 
+    // const newUser = new User({
+    //   username,
+    //   email,
+    //   password: hashedPassword,
+    // });
+
+    // Create the new user instance without hashing the password
     const newUser = new User({
       username,
       email,
-      password: hashedPassword,
+      password, // The raw password will be validated here
     });
 
-    await newUser.save();
+    // Validate the user to catch validation errors (like password minlength)
+    await newUser.validate();
 
+    // Now hash the password after validation
+    newUser.password = bcryptjs.hashSync(password, 10);
+
+    await newUser.save();
     res.status(201).json({ message: "Signup successful" });
   } catch (error) {
     next(error);
@@ -72,9 +83,7 @@ export const signin = async (req, res, next) => {
         sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Use lax in dev mode // Prevents CSRF attacks by only allowing the cookie to be sent from the same domain
       })
       .status(200)
-      .json(rest);
-
-    res.status(201).json({ message: "Signin successful" });
+      .json({ message: "Sign in successful", ...rest });
   } catch (error) {
     next(error);
   }
