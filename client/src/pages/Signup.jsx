@@ -7,21 +7,21 @@ function Signup() {
       <form className="flex flex-col gap-4 ">
         <input
           type="text"
-          placeholder="username"
+          placeholder="Username"
           className="border p-3 rounded-lg"
           id="username"
         />
 
         <input
           type="email"
-          placeholder="email"
+          placeholder="Email"
           className="border p-3 rounded-lg"
           id="email"
         />
 
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           className="border p-3 rounded-lg"
           id="password"
         />
@@ -36,7 +36,7 @@ function Signup() {
         <p>Have an account?</p>
         <Link to="/sign-in">
           <span className="text-blue-700  hover:underline hover:underline-offset-2">
-            Sign In
+            Sign in
           </span>
         </Link>
       </div>
