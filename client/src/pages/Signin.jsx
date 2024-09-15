@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Signin() {
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
+      <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
       <form className="flex flex-col gap-4 ">
         <input
           type="email"
@@ -22,7 +22,7 @@ function Signin() {
           className="text-white bg-slate-700 hover:bg-slate-800 p-3 rounded-lg uppercase cursor-pointer disabled:opacity-50"
           // disabled={true}
         >
-          Sign Up
+          Sign In
         </button>
       </form>
       <div className="flex gap-2 mt-5">
