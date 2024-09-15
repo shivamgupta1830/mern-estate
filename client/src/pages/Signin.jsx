@@ -6,6 +6,7 @@ import {
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice";
+import GoogleAuth from "../components/GoogleAuth";
 
 function Signin() {
   const [formData, setFormData] = useState({});
@@ -68,6 +69,7 @@ function Signin() {
         >
           {loading ? "Loading...." : "Sign In"}
         </button>
+        <GoogleAuth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Not registered yet?</p>
@@ -77,6 +79,7 @@ function Signin() {
           </span>
         </Link>
       </div>
+
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );

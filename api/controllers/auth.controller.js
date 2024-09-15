@@ -88,3 +88,66 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+// Google
+
+export const google = async (req, res, err) => {
+  console.log("signGOOgle");
+  const { email, name, photo: photoURL } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      });
+
+      const { password: pass, ...rest } = user._doc;
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          maxAge: 3600000 * 24 * 30,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        })
+        .status(200)
+        .json({ message: "Sign in successful", ...rest });
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
+      const newUser = new User({
+        username:
+          name.toLowerCase().split(" ").join("") +
+          Math.random().toString(36).slice(-8),
+        email,
+        password: hashedPassword,
+        profilePicture: photoURL,
+      });
+
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+        expiresIn: "30d",
+      });
+
+      const { password: pass, ...rest } = newUser._doc;
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          maxAge: 3600000 * 24 * 30,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        })
+        .status(200)
+        .json({ message: "Sign in successful", ...rest });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
