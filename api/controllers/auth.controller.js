@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/errorHandler.js";
 import jwt from "jsonwebtoken";
+import { log } from "console";
 
 // Signup
 
@@ -91,8 +92,7 @@ export const signin = async (req, res, next) => {
 
 // Google
 
-export const google = async (req, res, err) => {
-  console.log("signGOOgle");
+export const google = async (req, res, next) => {
   const { email, name, photo: photoURL } = req.body;
 
   try {

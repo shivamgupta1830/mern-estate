@@ -8,12 +8,15 @@ function GoogleAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleGoogleClick = async () => {
+  const handleGoogleClick = async (e) => {
+    e.preventDefault();
+
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
+
       const response = await fetch("/api/auth/google", {
         method: "POST",
         headers: {
@@ -25,7 +28,9 @@ function GoogleAuth() {
           photo: result.user.photoURL,
         }),
       });
+
       const data = await response.json();
+
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
