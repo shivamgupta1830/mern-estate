@@ -9,9 +9,17 @@ export const updateUser = async (req, res, next) => {
     return next(errorHandler(401, "Can't access this account!"));
 
   try {
-    // If a password is being updated, hash it before saving
+    // Validate the incoming password  if it is being updated
+
     if (req.body.password) {
-      req.body.password = await bcryptjs.hashSync(req.body.password, 10);
+      if (req.body.password.length < 6) {
+        return next(
+          errorHandler(400, "Password must have at least 6 characters")
+        );
+      }
+
+      // If validation passed, hash the password
+      req.body.password = bcryptjs.hashSync(req.body.password, 10);
     }
 
     // Find the user by ID and update it, while running validation
@@ -27,7 +35,7 @@ export const updateUser = async (req, res, next) => {
       },
       {
         new: true, // Return the updated document
-        runValidators: true, // Run validation on update
+        runValidators: true, // Run validation on update (password already checked earlier, here it will check Hashed Password)
       }
     );
 
@@ -40,12 +48,6 @@ export const updateUser = async (req, res, next) => {
     // });
 
     // This would replace the entire document with just the fields mentioned, and any missing fields would be deleted.
-
-    // If the user is not found ######################################################
-
-    if (!updatedUser) {
-      return next(errorHandler(404, "User not found!"));
-    }
 
     // Destructure to remove the password from the response
     const { password, ...rest } = updatedUser._doc;
