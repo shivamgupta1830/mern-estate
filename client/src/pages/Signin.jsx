@@ -80,7 +80,7 @@ function Signin() {
         </Link>
       </div>
 
-      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
     </div>
   );
 }
