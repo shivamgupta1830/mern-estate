@@ -367,7 +367,7 @@ function CreateListing() {
                 <button
                   type="button"
                   onClick={() => handleImageDelete(index)}
-                  className="text-red-700 rounded-lg hover:text-red-800 p-3 uppercase font-semibold"
+                  className="text-red-700 rounded-lg hover:text-red-800 p-3 text-sm uppercase font-semibold"
                 >
                   Delete
                 </button>
