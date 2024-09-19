@@ -29,3 +29,19 @@ export const deleteListing = async (req, res, next) => {
     next(error);
   }
 };
+
+export const editListing = async (req, res, next) => {
+  const listing = await Listings.findById(req.params.id);
+
+  if (!listing) return next(errorHandler(404, "Listing not found!"));
+
+  if (req.user.id !== listing.userRef)
+    return next(errorHandler(401, "You can edit only your listing!"));
+
+  try {
+    await Listings.findByIdAndDelete(req.params.id);
+    res.status(200).json("Listing has been deleted!");
+  } catch (error) {
+    next(error);
+  }
+};
