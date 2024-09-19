@@ -4,10 +4,10 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { app } from "../firebase";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function CreateListing() {
   const [files, setFiles] = useState([]);
@@ -34,6 +34,24 @@ function CreateListing() {
 
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
+  const params = useParams();
+  const listingID = params.listingID;
+
+  useEffect(() => {
+    const fetchListing = async () => {
+      const response = await fetch(`/api/listing/get/${listingID}`);
+      const data = await response.json();
+
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      setFormData(data);
+    };
+
+    fetchListing();
+  }, [listingID]);
 
   const handleImagesUpload = () => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -140,8 +158,8 @@ function CreateListing() {
       setLoading(true);
       setError(false);
 
-      const response = await fetch("/api/listing/create", {
-        method: "POST",
+      const response = await fetch(`/api/listing/update/${listingID}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -156,7 +174,7 @@ function CreateListing() {
         return;
       }
 
-      navigate(`/listing/${data._id}`);
+      navigate(`/listing/${data.updatedListing._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -166,7 +184,7 @@ function CreateListing() {
   return (
     <main className="p-3 max-w-4xl mx-auto min-h-screen">
       <h1 className="text-3xl font-semibold text-center my-5">
-        Create Listing
+        Update Listing
       </h1>
       <form className="flex flex-col sm:flex-row gap-5" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 flex-1">
@@ -378,7 +396,7 @@ function CreateListing() {
             className="uppercase p-3 rounded-lg bg-slate-700 text-white hover:bg-slate-800 disabled:opacity-50 "
             disabled={loading}
           >
-            {loading ? "Creating Listing..." : "Create Listing"}
+            {loading ? "Updating..." : "Update"}
           </button>
           {error && (
             <p className="text-red-700 text-sm font-semibold">{error}</p>
