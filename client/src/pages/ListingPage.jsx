@@ -14,6 +14,7 @@ import {
   FaShare,
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import Contact from "../components/Contact";
 
 function ListingPage() {
   SwiperCore.use([Navigation]);
@@ -141,17 +142,18 @@ function ListingPage() {
                 {listingData.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
+
             {currentUser &&
               listingData.userRef !== currentUser._id &&
               !contact && (
                 <button
                   onClick={() => setContact(true)}
-                  className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3"
+                  className="bg-slate-700 text-white rounded-lg uppercase hover:bg-slate-800 mt-8 p-3"
                 >
                   Contact Owner
                 </button>
               )}
-            {/* {contact && <Contact listing={listing} />} */}
+            {contact && <Contact listingData={listingData} />}
           </div>
         </div>
       )}
