@@ -66,3 +66,82 @@ export const getListing = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllListings = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.limit) || 0;
+
+    let offer = req.query.offer;
+    if (offer === undefined || "false") {
+      offer = { $in: [false, true] };
+    }
+
+    let furnished = req.query.furnished;
+    if (furnished === undefined || "false") {
+      furnished = { $in: [false, true] };
+    }
+
+    let parking = req.query.parking;
+    if (parking === undefined || "false") {
+      parking = { $in: [false, true] };
+    }
+
+    let type = req.query.type;
+    if (type === undefined || "all") {
+      type = { $in: ["sale", "rent"] };
+    }
+
+    let searchTerm = req.query.searchTerm || "";
+    let sort = req.query.sort || "createdAt";
+    let order = req.query.sort || "desc";
+
+    const listings = await Listings.find({
+      name: { $regex: searchTerm, $options: "i" },
+      offer,
+      furnished,
+      parking,
+      type,
+    })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
+    return res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// export const getAllListings = async (req, res, next) => {
+//   try {
+//     const limit = parseInt(req.query.limit) || 9;
+//     const page = parseInt(req.query.page) || 1;
+//     const startIndex = (page - 1) * limit;
+
+//     let offer = req.query.offer === "true" ? true : req.query.offer === "false" ? false : { $in: [false, true] };
+//     let furnished = req.query.furnished === "true" ? true : req.query.furnished === "false" ? false : { $in: [false, true] };
+//     let parking = req.query.parking === "true" ? true : req.query.parking === "false" ? false : { $in: [false, true] };
+//     let type = req.query.type && req.query.type !== "all" ? req.query.type : { $in: ["sale", "rent"] };
+
+//     let searchTerm = req.query.searchTerm || "";
+//     let sort = req.query.sort || "createdAt";
+//     let order = req.query.order === "asc" ? 1 : -1;
+
+//     const listings = await Listings.find({
+//       name: { $regex: searchTerm, $options: "i" },
+//       offer,
+//       furnished,
+//       parking,
+//       type,
+//     })
+//
+//       .sort({ [sort]: order })
+//       .limit(limit)
+//       .skip(startIndex);
+
+//     return res.status(200).json(listings);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
