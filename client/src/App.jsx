@@ -10,6 +10,7 @@ import CreateListing from "./pages/CreateListing";
 import Footer from "./components/Footer";
 import UpdateListing from "./pages/UpdateListing";
 import ListingPage from "./pages/ListingPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/about" element={<About />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/listing/:listingID" element={<ListingPage />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
