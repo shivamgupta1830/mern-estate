@@ -19,7 +19,7 @@ function CreateListing() {
     type: "rent",
     bedrooms: 1,
     bathrooms: 1,
-    regularPrice: 50,
+    regularPrice: 500,
     discountedPrice: 0,
     offer: false,
     parking: false,
@@ -108,7 +108,7 @@ function CreateListing() {
   };
 
   const handleChange = (e) => {
-    if (e.target.id === "sell" || e.target.id === "rent") {
+    if (e.target.id === "sale" || e.target.id === "rent") {
       setFormData({ ...formData, type: e.target.id });
     }
 
@@ -119,12 +119,16 @@ function CreateListing() {
     ) {
       setFormData({ ...formData, [e.target.id]: e.target.checked });
     }
+
     if (
       e.target.type === "number" ||
       e.target.type === "text" ||
       e.target.type === "textarea"
     ) {
-      setFormData({ ...formData, [e.target.id]: e.target.value });
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      });
     }
   };
 
@@ -205,12 +209,12 @@ function CreateListing() {
             <div className=" flex gap-2">
               <input
                 type="checkbox"
-                id="sell"
+                id="sale"
                 className="w-5"
                 onChange={handleChange}
-                checked={formData.type === "sell"}
+                checked={formData.type === "sale"}
               />
-              <span>Sell</span>
+              <span>Sale</span>
             </div>
             <div className=" flex gap-2">
               <input
@@ -223,33 +227,35 @@ function CreateListing() {
 
               <span>Rent</span>
             </div>
-            <div className=" flex gap-2">
+            <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="parking"
                 className="w-5"
                 onChange={handleChange}
-                checked={formData.parking === true}
+                checked={formData.parking}
               />
               <span>Parking spot</span>
             </div>
-            <div className=" flex gap-2">
+
+            <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="furnished"
                 className="w-5"
                 onChange={handleChange}
-                checked={formData.furnished === true}
+                checked={formData.furnished}
               />
               <span>Furnished</span>
             </div>
-            <div className=" flex gap-2">
+
+            <div className="flex gap-2">
               <input
                 type="checkbox"
                 id="offer"
                 className="w-5"
                 onChange={handleChange}
-                checked={formData.offer === true}
+                checked={formData.offer}
               />
               <span>Offer</span>
             </div>
@@ -275,7 +281,7 @@ function CreateListing() {
                 type="number"
                 id="bathrooms"
                 min="1"
-                max="10"
+                max="20"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
@@ -289,7 +295,7 @@ function CreateListing() {
                 type="number"
                 id="regularPrice"
                 min="50"
-                max="1000000"
+                max="100000000"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
@@ -298,7 +304,10 @@ function CreateListing() {
 
               <div className="flex flex-col items-center gap-2">
                 <p>Regular Price</p>
-                <span className="text-xs">($ / month)</span>
+                <span className="text-xs -mt-2">
+                  {" "}
+                  {formData.type === "rent" ? "($/month)" : "$ one time pay"}
+                </span>
               </div>
             </div>
 
@@ -308,7 +317,7 @@ function CreateListing() {
                   type="number"
                   id="discountedPrice"
                   min="0"
-                  max="1000000"
+                  max="99999999"
                   required
                   className="p-3 border border-gray-300 rounded-lg"
                   onChange={handleChange}
@@ -317,7 +326,9 @@ function CreateListing() {
 
                 <div className="flex flex-col items-center gap-2">
                   <p>Discounted Price</p>
-                  <span className="text-xs">($ / month)</span>
+                  <span className="text-xs -mt-2">
+                    {formData.type === "rent" ? "($/month)" : "$ one time pay"}
+                  </span>
                 </div>
               </div>
             )}

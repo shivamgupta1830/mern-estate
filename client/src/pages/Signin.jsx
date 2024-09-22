@@ -48,7 +48,7 @@ function Signin() {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
+    <div className="p-5 max-w-lg mx-auto min-h-screen">
       <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
       <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
         <input
