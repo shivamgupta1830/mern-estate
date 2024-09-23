@@ -126,10 +126,13 @@ function SearchPage() {
   const onShowMoreClick = async () => {
     const numberOfListings = listings.length;
     const startIndex = numberOfListings;
+
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
+
     const searchQuery = urlParams.toString();
     const res = await fetch(`/api/listing/get?${searchQuery}`);
+
     const data = await res.json();
     if (data.length < 9) {
       setShowMore(false);
@@ -154,6 +157,7 @@ function SearchPage() {
               onChange={handleChange}
             />
           </div>
+
           <div className="flex gap-2 flex-wrap items-center">
             <label className="font-semibold">Type:</label>
             <div className="flex gap-2">
@@ -166,6 +170,7 @@ function SearchPage() {
               />
               <span>Rent & Sale</span>
             </div>
+
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -176,6 +181,7 @@ function SearchPage() {
               />
               <span>Rent</span>
             </div>
+
             <div className="flex gap-2">
               <input
                 type="checkbox"
