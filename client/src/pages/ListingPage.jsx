@@ -66,7 +66,7 @@ function ListingPage() {
             {listingData.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
-                  className="h-[450px]"
+                  className="h-[325px] md:[450px]"
                   style={{
                     background: `url(${url}) center no-repeat`,
                     backgroundSize: "cover",
