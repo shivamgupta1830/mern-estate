@@ -266,6 +266,7 @@ function Profile() {
         >
           {loading ? "Updating...." : "Update"}
         </button>
+
         <Link
           to="/create-listing"
           className="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:bg-green-800"
