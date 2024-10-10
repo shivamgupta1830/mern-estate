@@ -33,8 +33,8 @@ function Header() {
       <div className="flex justify-between items-center max-w-6xl m-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-lg flex flex-wrap">
-            <span className="text-slate-500">Shivam</span>
-            <span className="text-slate-00">Estate</span>
+            <span className="text-slate-500">Estate</span>
+            <span className="text-slate-00">Hub</span>
           </h1>
         </Link>
 
